@@ -1,161 +1,102 @@
-#include "shell.h"
-
+#include "holberton.h"
 /**
- * _strlen - returns the length of a string
- * @s: the string whose length to check
+ * _strcmpdir - compares strings to find dir.
  *
- * Return: integer length of string
- */
-int _strlen(char *s)
+ * @s1: string.
+ * @s2: string.
+ *
+ * Return: if match and any other number if otherwise.
+ **/
+int _strcmpdir(char *s1, char *s2)
 {
 	int i = 0;
 
-	if (!s)
-		return (0);
-
-	while (*s++)
-		i++;
-	return (i);
-}
-
-/**
- * _strcmp - performs lexicogarphic comparison of two strangs.
- * @s1: the first strang
- * @s2: the second strang
- *
- * Return: negative if s1 < s2, positive if s1 > s2, zero if s1 == s2
- */
-int _strcmp(char *s1, char *s2)
-{
-	while (*s1 && *s2)
+	for (; (*s2 != '\0' && *s1 != '\0') && *s1 == *s2; s1++)
 	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
+		if (i == 3)
+			break;
+		i++;
 		s2++;
 	}
-	if (*s1 == *s2)
-		return (0);
-	else
-		return (*s1 < *s2 ? -1 : 1);
+
+	return (*s1 - *s2);
 }
-
 /**
- * starts_with - checks if needle starts with haystack
- * @haystack: string to search
- * @needle: the substring to find
- *
- * Return: address of next char of haystack or NULL
- */
-char *starts_with(const char *haystack, const char *needle)
-{
-	while (*needle)
-		if (*needle++ != *haystack++)
-			return (NULL);
-	return ((char *)haystack);
-}
-
-/**
- * _strcat - concatenates two strings
- * @dest: the destination buffer
- * @src: the source buffer
- *
- * Return: pointer to destination buffer
- */
-char *_strcat(char *dest, char *src)
-{
-	char *ret = dest;
-
-	while (*dest)
-		dest++;
-	while (*src)
-		*dest++ = *src++;
-	*dest = *src;
-	return (ret);
-}
-
-/**
- * _strcpy - copies a string
- * @dest: the destination
- * @src: the source
- *
- * Return: pointer to destination
- */
-char *_strcpy(char *dest, char *src)
-{
-	int i = 0;
-
-	if (dest == src || src == 0)
-		return (dest);
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = 0;
-	return (dest);
-}
-
-/**
- * _strdup - duplicates a string
- * @str: the string to duplicate
- *
- * Return: pointer to the duplicated string
- */
-char *_strdup(const char *str)
-{
-	int length = 0;
-	char *ret;
-
-	if (str == NULL)
-		return (NULL);
-	while (*str++)
-		length++;
-	ret = malloc(sizeof(char) * (length + 1));
-	if (!ret)
-		return (NULL);
-	for (length++; length--;)
-		ret[length] = *--str;
-	return (ret);
-}
-
-/**
- *_puts - prints an input string
- *@str: the string to be printed
- *
- * Return: Nothing
- */
-void _puts(char *str)
-{
-	int i = 0;
-
-	if (!str)
-		return;
-	while (str[i] != '\0')
-	{
-		_putchar(str[i]);
-		i++;
-	}
-}
-
-/**
- * _putchar - writes the character c to stdout
+ * charput - writes the character like putchar
  * @c: The character to print
  *
  * Return: On success 1.
  * On error, -1 is returned, and errno is set appropriately.
  */
-int _putchar(char c)
+int charput(char c)
 {
-	static int i;
-	static char buf[WRITE_BUF_SIZE];
+	return (write(1, &c, 1));
+}
 
-	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+/**
+ * place - similar to puts in C
+ * @str: a pointer the integer we want to set to 402
+ *
+ * Return: int
+ */
+void place(char *str)
+{
+	while (*str != '\0')
 	{
-		write(1, buf, i);
-		i = 0;
+		charput(*str);
+		str++;
 	}
-	if (c != BUF_FLUSH)
-		buf[i++] = c;
-	return (1);
+}
+
+/**
+ * _strlen - Len string.
+ * @str: My string.
+ * Return: Length.
+ */
+int _strlen(char *str)
+{
+	int i;
+
+	for (i = 0; str[i] != '\0'; i++)
+		;
+
+	return (i);
+}
+
+/**
+ * str_concat - concatane strings.
+ * @s1: string.
+ * @s2: second string.
+ * Return: strings.
+ */
+char *str_concat(char *s1, char *s2)
+{
+	char *a;
+	int lens1, lens2, j, i, e;
+
+	if (s1 == NULL)
+		s1 = "";
+
+	if (s2 == NULL)
+		s2 = "";
+
+	lens1 = _strlen(s1);
+
+	lens2 = _strlen(s2);
+
+	a = malloc(((lens1) + (lens2) + 1) * sizeof(char));
+
+	if (a == NULL)
+		return (NULL);
+
+	for (j = 0; j < lens1; j++)
+	{
+		a[j] = s1[j];
+	}
+
+	for (i = lens1, e = 0; e <= lens2; i++, e++)
+	{
+		a[i] = s2[e];
+	}
+	return (a);
 }
